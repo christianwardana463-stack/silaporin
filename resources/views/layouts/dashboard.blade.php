@@ -104,6 +104,22 @@
         .logout-btn:hover {
             color: #DC2626;
         }
+
+        .status-badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-diterima { background: #DBEAFE; color: #1D4ED8; }
+        .status-diproses { background: #FEF3C7; color: #B45309; }
+        .status-selesai { background: #D1FAE5; color: #065F46; }
+        .status-ditolak { background: #FEE2E2; color: #991B1B; }
+
+        .priority-rendah { background: #D1FAE5; color: #065F46; }
+        .priority-sedang { background: #FEF3C7; color: #B45309; }
+        .priority-tinggi { background: #FEE2E2; color: #991B1B; }
     </style>
 
     @stack('styles')
@@ -123,26 +139,26 @@
                     <a href="{{ route('dashboard.admin') }}" class="nav-link {{ request()->routeIs('dashboard.admin') ? 'active' : '' }}">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin.complaints.index') }}" class="nav-link {{ request()->routeIs('admin.complaints.*') ? 'active' : '' }}">
                         <i class="fas fa-clipboard-list"></i> Kelola Pengaduan
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i> Kelola Pengguna
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="fas fa-tags"></i> Kelola Kategori
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i> Laporan
                     </a>
                 @else
                     <a href="{{ route('dashboard.siswa') }}" class="nav-link {{ request()->routeIs('dashboard.siswa') ? 'active' : '' }}">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('siswa.complaints.create') }}" class="nav-link {{ request()->routeIs('siswa.complaints.create') ? 'active' : '' }}">
                         <i class="fas fa-plus-circle"></i> Buat Pengaduan
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('siswa.complaints.history') }}" class="nav-link {{ request()->routeIs('siswa.complaints.history') ? 'active' : '' }}">
                         <i class="fas fa-history"></i> Riwayat Pengaduan
                     </a>
                 @endif
