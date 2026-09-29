@@ -7,10 +7,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ComplaintController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Siswa\ComplaintController as SiswaComplaintController;
 use Illuminate\Support\Facades\Route;
 
+// ============================================================
 // REDIRECT ROOT
+// ============================================================
 Route::get('/', function () {
     if (auth()->check()) {
         return auth()->user()->isAdmin()
@@ -20,7 +23,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// ============================================================
 // GUEST
+// ============================================================
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
@@ -28,17 +33,22 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
 });
 
+// ============================================================
 // AUTH ALL
+// ============================================================
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
+// ============================================================
 // ADMIN
+// ============================================================
 Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
     Route::get('/admin', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin');
 
+    // CRUD Kategori
     Route::resource('/categories', CategoryController::class)->names([
         'index' => 'admin.categories.index',
         'create' => 'admin.categories.create',
@@ -49,6 +59,7 @@ Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
         'destroy' => 'admin.categories.destroy',
     ]);
 
+    // CRUD Pengguna
     Route::resource('/users', UserController::class)->names([
         'index' => 'admin.users.index',
         'create' => 'admin.users.create',
@@ -59,15 +70,22 @@ Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
         'destroy' => 'admin.users.destroy',
     ]);
 
-    // ==========================================================
-    // KELOLA PENGADUAN (ADMIN) - URL BERBEDA!
-    // ==========================================================
+    // Kelola Pengaduan (Admin)
     Route::get('/admin/complaints', [ComplaintController::class, 'index'])->name('admin.complaints.index');
     Route::get('/admin/complaints/{id}', [ComplaintController::class, 'show'])->name('admin.complaints.show');
     Route::put('/admin/complaints/{id}', [ComplaintController::class, 'update'])->name('admin.complaints.update');
+
+    // ==========================================================
+    // LAPORAN (Admin)
+    // ==========================================================
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
+    Route::get('/reports/export-pdf', [ReportController::class, 'exportPdf'])->name('admin.reports.export-pdf');
+    Route::get('/reports/export-excel', [ReportController::class, 'exportExcel'])->name('admin.reports.export-excel');
 });
 
+// ============================================================
 // SISWA
+// ============================================================
 Route::middleware(['auth', 'siswa'])->prefix('dashboard')->group(function () {
     Route::get('/siswa', [DashboardController::class, 'siswaDashboard'])->name('dashboard.siswa');
 

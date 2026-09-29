@@ -99,6 +99,45 @@
                             </div>
                         </div>
                     @endif
+
+                    <!-- ========================================================== -->
+                    <!-- SECTION RATING DARI SISWA -->
+                    <!-- ========================================================== -->
+                    @if($complaint->rating)
+                        <div class="mb-3">
+                            <small class="text-muted">Rating dari Siswa</small>
+                            <div class="alert alert-warning">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <span class="text-warning fs-3">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $complaint->rating->rating)
+                                                    ★
+                                                @else
+                                                    ☆
+                                                @endif
+                                            @endfor
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <strong>{{ $complaint->rating->rating }}/5</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ $complaint->rating->comment ?? 'Tidak ada komentar' }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif($complaint->status == 'Selesai')
+                        <div class="mb-3">
+                            <small class="text-muted">Rating dari Siswa</small>
+                            <div class="alert alert-secondary">
+                                <i class="fas fa-clock me-2"></i>
+                                Siswa belum memberikan rating.
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
