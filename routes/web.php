@@ -24,6 +24,17 @@ Route::get('/', function () {
 });
 
 // ============================================================
+// PUBLIC TRACKING (Tanpa Login) - Untuk QR Code
+// ============================================================
+Route::get('/track/{ticket}', function ($ticket) {
+    $complaint = \App\Models\Complaint::with(['user', 'category', 'histories.changer'])
+        ->where('ticket_number', $ticket)
+        ->firstOrFail();
+
+    return view('public.track', compact('complaint'));
+})->name('public.track');
+
+// ============================================================
 // GUEST
 // ============================================================
 Route::middleware('guest')->group(function () {
@@ -48,7 +59,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
     Route::get('/admin', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin');
 
-    // CRUD Kategori
     Route::resource('/categories', CategoryController::class)->names([
         'index' => 'admin.categories.index',
         'create' => 'admin.categories.create',
@@ -59,7 +69,6 @@ Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
         'destroy' => 'admin.categories.destroy',
     ]);
 
-    // CRUD Pengguna
     Route::resource('/users', UserController::class)->names([
         'index' => 'admin.users.index',
         'create' => 'admin.users.create',
@@ -70,14 +79,10 @@ Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
         'destroy' => 'admin.users.destroy',
     ]);
 
-    // Kelola Pengaduan (Admin)
     Route::get('/admin/complaints', [ComplaintController::class, 'index'])->name('admin.complaints.index');
     Route::get('/admin/complaints/{id}', [ComplaintController::class, 'show'])->name('admin.complaints.show');
     Route::put('/admin/complaints/{id}', [ComplaintController::class, 'update'])->name('admin.complaints.update');
 
-    // ==========================================================
-    // LAPORAN (Admin)
-    // ==========================================================
     Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
     Route::get('/reports/export-pdf', [ReportController::class, 'exportPdf'])->name('admin.reports.export-pdf');
     Route::get('/reports/export-excel', [ReportController::class, 'exportExcel'])->name('admin.reports.export-excel');

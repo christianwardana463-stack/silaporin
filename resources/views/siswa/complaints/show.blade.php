@@ -27,7 +27,6 @@
 
     <div class="row">
         <div class="col-md-8">
-            <!-- Informasi Pengaduan -->
             <div class="card shadow mb-4">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
@@ -102,6 +101,20 @@
                             </div>
                         </div>
                     @endif
+
+                    <!-- QR CODE SECTION -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <small class="text-muted d-block mb-2">Scan QR Code untuk tracking:</small>
+                        <div class="d-inline-block p-2 bg-white border rounded">
+                            {!! QrCode::size(130)->generate(route('public.track', $complaint->ticket_number)) !!}
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-link me-1"></i>
+                                {{ route('public.track', $complaint->ticket_number) }}
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,26 +179,16 @@
                                 <div class="mb-3 text-center">
                                     <label class="form-label fw-semibold">Rating</label>
                                     <div class="rating-stars">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rating" id="star1" value="1">
-                                            <label class="form-check-label" for="star1">★</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rating" id="star2" value="2">
-                                            <label class="form-check-label" for="star2">★★</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rating" id="star3" value="3">
-                                            <label class="form-check-label" for="star3">★★★</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rating" id="star4" value="4">
-                                            <label class="form-check-label" for="star4">★★★★</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rating" id="star5" value="5">
-                                            <label class="form-check-label" for="star5">★★★★★</label>
-                                        </div>
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" required>
+                                                <label class="form-check-label" for="star{{ $i }}">
+                                                    @for($j = 1; $j <= $i; $j++)
+                                                        ★
+                                                    @endfor
+                                                </label>
+                                            </div>
+                                        @endfor
                                     </div>
                                 </div>
                                 <div class="mb-3">

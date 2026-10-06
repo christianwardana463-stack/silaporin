@@ -6,6 +6,7 @@ use App\Models\Complaint;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -26,6 +27,31 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // ==========================================================
+        // DATA CHART 1: Pengaduan per Kategori (Bar Chart)
+        // ==========================================================
+        $categories = Category::withCount('complaints')->get();
+        $chartCategoriesLabels = $categories->pluck('name')->toArray();
+        $chartCategoriesData = $categories->pluck('complaints_count')->toArray();
+
+        // ==========================================================
+        // DATA CHART 2: Pengaduan per Status (Doughnut Chart)
+        // ==========================================================
+        $chartStatusLabels = ['Diterima', 'Diproses', 'Selesai', 'Ditolak'];
+        $chartStatusData = [$diterima, $diproses, $selesai, $ditolak];
+
+        // ==========================================================
+        // DATA CHART 3: Tren Pengaduan 7 Hari Terakhir (Line Chart)
+        // ==========================================================
+        $chartTrendLabels = [];
+        $chartTrendData = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $chartTrendLabels[] = $date->format('d M');
+            $chartTrendData[] = Complaint::whereDate('created_at', $date->format('Y-m-d'))->count();
+        }
+
         return view('dashboard.admin', compact(
             'totalComplaints',
             'diterima',
@@ -35,7 +61,13 @@ class DashboardController extends Controller
             'totalUsers',
             'totalSiswa',
             'totalKategori',
-            'recentComplaints'
+            'recentComplaints',
+            'chartCategoriesLabels',
+            'chartCategoriesData',
+            'chartStatusLabels',
+            'chartStatusData',
+            'chartTrendLabels',
+            'chartTrendData'
         ));
     }
 

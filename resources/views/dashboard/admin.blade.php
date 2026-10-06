@@ -73,6 +73,51 @@
         </div>
     </div>
 
+    <!-- CHART SECTION -->
+    <div class="row">
+        <!-- Chart 1: Tren Pengaduan 7 Hari -->
+        <div class="col-md-8 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-line me-2"></i> Tren Pengaduan 7 Hari Terakhir
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartTrend" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 2: Status Pengaduan -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-pie me-2"></i> Status Pengaduan
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartStatus" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 3: Pengaduan per Kategori -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-bar me-2"></i> Pengaduan per Kategori
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartCategories" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Statistik Tambahan -->
     <div class="row">
         <div class="col-md-4 mb-4">
@@ -160,3 +205,150 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // ============================================
+    // CHART 1: TREN PENGADUAN 7 HARI (LINE CHART)
+    // ============================================
+    const ctxTrend = document.getElementById('chartTrend').getContext('2d');
+    new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+            labels: @json($chartTrendLabels),
+            datasets: [{
+                label: 'Jumlah Pengaduan',
+                data: @json($chartTrendData),
+                borderColor: '#2563EB',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#2563EB',
+                pointBorderColor: '#FFFFFF',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        font: { family: 'Poppins', size: 11 }
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { family: 'Poppins', size: 11 }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+
+    // ============================================
+    // CHART 2: STATUS PENGADUAN (DOUGHNUT)
+    // ============================================
+    const ctxStatus = document.getElementById('chartStatus').getContext('2d');
+    new Chart(ctxStatus, {
+        type: 'doughnut',
+        data: {
+            labels: @json($chartStatusLabels),
+            datasets: [{
+                data: @json($chartStatusData),
+                backgroundColor: [
+                    '#3B82F6', // Diterima - Blue
+                    '#F59E0B', // Diproses - Yellow
+                    '#10B981', // Selesai - Green
+                    '#EF4444'  // Ditolak - Red
+                ],
+                borderWidth: 0,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { family: 'Poppins', size: 11 },
+                        padding: 12,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+
+    // ============================================
+    // CHART 3: PENGADUAN PER KATEGORI (BAR CHART)
+    // ============================================
+    const ctxCategories = document.getElementById('chartCategories').getContext('2d');
+    new Chart(ctxCategories, {
+        type: 'bar',
+        data: {
+            labels: @json($chartCategoriesLabels),
+            datasets: [{
+                label: 'Jumlah Pengaduan',
+                data: @json($chartCategoriesData),
+                backgroundColor: [
+                    '#2563EB', '#10B981', '#F59E0B', '#EF4444',
+                    '#8B5CF6', '#EC4899', '#06B6D4', '#F97316'
+                ],
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        font: { family: 'Poppins', size: 11 }
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { family: 'Poppins', size: 11 }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+</script>
+@endpush

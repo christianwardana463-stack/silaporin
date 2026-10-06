@@ -100,9 +100,7 @@
                         </div>
                     @endif
 
-                    <!-- ========================================================== -->
                     <!-- SECTION RATING DARI SISWA -->
-                    <!-- ========================================================== -->
                     @if($complaint->rating)
                         <div class="mb-3">
                             <small class="text-muted">Rating dari Siswa</small>
@@ -138,6 +136,20 @@
                             </div>
                         </div>
                     @endif
+
+                    <!-- QR CODE SECTION -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <small class="text-muted d-block mb-2">Scan QR Code untuk tracking pengaduan:</small>
+                        <div class="d-inline-block p-3 bg-white border rounded">
+                            {!! QrCode::size(150)->generate(route('public.track', $complaint->ticket_number)) !!}
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-link me-1"></i>
+                                {{ route('public.track', $complaint->ticket_number) }}
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
