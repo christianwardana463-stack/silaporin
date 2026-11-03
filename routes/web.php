@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ComplaintController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Siswa\ComplaintController as SiswaComplaintController;
+use App\Http\Controllers\NotificationController; // <-- TAMBAHKAN INI
 use Illuminate\Support\Facades\Route;
 
 // ============================================================
@@ -51,6 +52,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    
+    // RUTE NOTIFIKASI
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
 // ============================================================

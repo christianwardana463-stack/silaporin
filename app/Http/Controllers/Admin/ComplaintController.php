@@ -5,32 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
 use App\Models\ComplaintStatusHistory;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ComplaintController extends Controller
 {
-    // Daftar semua pengaduan
     public function index(Request $request)
     {
         $query = Complaint::with(['user', 'category']);
 
-        // Filter berdasarkan status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-
-        // Filter berdasarkan prioritas
         if ($request->filled('priority')) {
             $query->where('priority', $request->priority);
         }
-
-        // Filter berdasarkan kategori
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
-
-        // Search berdasarkan tiket atau judul
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -45,7 +38,6 @@ class ComplaintController extends Controller
         return view('admin.complaints.index', compact('complaints', 'categories'));
     }
 
-    // Detail pengaduan
     public function show($id)
     {
         $complaint = Complaint::with(['user', 'category', 'histories.changer', 'rating'])
@@ -54,7 +46,6 @@ class ComplaintController extends Controller
         return view('admin.complaints.show', compact('complaint'));
     }
 
-    // Update status, prioritas, tanggapan, foto perbaikan
     public function update(Request $request, $id)
     {
         $complaint = Complaint::findOrFail($id);
@@ -68,13 +59,11 @@ class ComplaintController extends Controller
 
         $oldStatus = $complaint->status;
 
-        // Upload foto perbaikan
         $repairPhotoPath = $complaint->repair_photo;
         if ($request->hasFile('repair_photo')) {
             $repairPhotoPath = $request->file('repair_photo')->store('repairs', 'public');
         }
 
-        // Update data
         $complaint->update([
             'status' => $request->status,
             'priority' => $request->priority,
@@ -85,13 +74,21 @@ class ComplaintController extends Controller
             'completed_at' => $request->status == 'Selesai' ? now() : null,
         ]);
 
-        // Simpan riwayat status jika berubah
         if ($oldStatus != $request->status) {
             ComplaintStatusHistory::create([
                 'complaint_id' => $complaint->id,
                 'status' => $request->status,
                 'note' => 'Status diubah oleh Admin: ' . $request->status,
                 'changed_by' => Auth::id(),
+            ]);
+        }
+
+        // KIRIM NOTIFIKASI KE SISWA (Tanpa Link)
+        if ($oldStatus != $request->status || $request->filled('admin_response')) {
+            Notification::create([
+                'user_id' => $complaint->user_id,
+                'title' => 'Update Pengaduan: ' . $complaint->ticket_number,
+                'message' => 'Status pengaduan Anda kini: "' . $request->status . '". Tanggapan Admin: ' . ($request->admin_response ?: '-'),
             ]);
         }
 

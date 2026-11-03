@@ -6,21 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Complaint;
 use App\Models\ComplaintStatusHistory;
+use App\Models\Notification;
 use App\Models\Rating;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class ComplaintController extends Controller
 {
-    // Form Buat Pengaduan
     public function create()
     {
         $categories = Category::all();
         return view('siswa.complaints.create', compact('categories'));
     }
 
-    // Simpan Pengaduan
     public function store(Request $request)
     {
         $request->validate([
@@ -31,16 +30,13 @@ class ComplaintController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Generate nomor tiket otomatis
         $ticketNumber = 'SLP-' . date('Ymd') . '-' . str_pad(Complaint::count() + 1, 3, '0', STR_PAD_LEFT);
 
-        // Upload foto jika ada
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('complaints', 'public');
         }
 
-        // Simpan pengaduan
         $complaint = Complaint::create([
             'ticket_number' => $ticketNumber,
             'user_id' => Auth::id(),
@@ -53,7 +49,6 @@ class ComplaintController extends Controller
             'priority' => 'Rendah',
         ]);
 
-        // Simpan riwayat status
         ComplaintStatusHistory::create([
             'complaint_id' => $complaint->id,
             'status' => 'Diterima',
@@ -61,11 +56,20 @@ class ComplaintController extends Controller
             'changed_by' => Auth::id(),
         ]);
 
+        // KIRIM NOTIFIKASI KE ADMIN (Tanpa Link)
+        $admins = User::where('role', 'Admin')->get();
+        foreach ($admins as $admin) {
+            Notification::create([
+                'user_id' => $admin->id,
+                'title' => 'Pengaduan Baru: ' . $ticketNumber,
+                'message' => Auth::user()->name . ' baru saja membuat pengaduan: "' . $request->title . '".',
+            ]);
+        }
+
         return redirect()->route('siswa.complaints.history')
             ->with('success', 'Pengaduan berhasil dikirim! Nomor tiket: ' . $ticketNumber);
     }
 
-    // Riwayat Pengaduan
     public function history()
     {
         $complaints = Complaint::where('user_id', Auth::id())
@@ -76,7 +80,6 @@ class ComplaintController extends Controller
         return view('siswa.complaints.history', compact('complaints'));
     }
 
-    // Detail Pengaduan
     public function show($id)
     {
         $complaint = Complaint::where('user_id', Auth::id())
@@ -86,7 +89,6 @@ class ComplaintController extends Controller
         return view('siswa.complaints.show', compact('complaint'));
     }
 
-    // Rating Pengaduan
     public function rate(Request $request, $id)
     {
         $request->validate([
@@ -98,7 +100,6 @@ class ComplaintController extends Controller
             ->where('status', 'Selesai')
             ->findOrFail($id);
 
-        // Cek apakah sudah pernah rating
         if ($complaint->rating) {
             return back()->with('error', 'Anda sudah memberikan rating untuk pengaduan ini.');
         }

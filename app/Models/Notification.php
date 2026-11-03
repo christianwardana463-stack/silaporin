@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'title',
-        'message',
-        'is_read',
-        'type'
-    ];
+    protected $fillable = ['user_id', 'title', 'message', 'is_read', 'link'];
 
     public function user()
     {
