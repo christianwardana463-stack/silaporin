@@ -2,19 +2,25 @@
 
 namespace App\Providers;
 
-use App\Providers\Composers\SidebarComposer;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Register any application services.
+     */
     public function register(): void
     {
         //
     }
 
+    /**
+     * Bootstrap any application services.
+     */
     public function boot(): void
     {
-        View::composer('layouts.dashboard', SidebarComposer::class);
+        // Gunakan styling Bootstrap 5 untuk pagination
+        Paginator::useBootstrapFive();
     }
 }

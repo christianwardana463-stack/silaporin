@@ -1,3 +1,4 @@
+
 @extends('layouts.dashboard')
 
 @section('title', 'Profil Saya')
@@ -58,13 +59,15 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="kelas" class="form-label fw-semibold">Kelas</label>
-                            <input type="text" class="form-control" id="kelas" name="kelas"
-                                   value="{{ old('kelas', $user->kelas) }}" placeholder="XII RPL">
+                    @if(!Auth::user()->isAdmin())
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="kelas" class="form-label fw-semibold">Kelas</label>
+                                <input type="text" class="form-control" id="kelas" name="kelas"
+                                       value="{{ old('kelas', $user->kelas) }}" placeholder="XII RPL">
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <hr class="my-4">
