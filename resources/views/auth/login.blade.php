@@ -170,6 +170,24 @@
                 padding: 30px 20px;
             }
         }
+                /* ANIMASI HALAMAN LOGIN */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .login-left { animation: slideInLeft 0.6s ease-out forwards; }
+        .login-right { animation: slideInRight 0.6s ease-out forwards; }
+        
+        .form-control:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3) !important;
+        }
     </style>
 </head>
 

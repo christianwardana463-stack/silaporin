@@ -25,7 +25,7 @@
 
     <div class="card shadow">
         <div class="card-body">
-            <form action="{{ route('siswa.complaints.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('siswa.complaints.store') }}" method="POST" enctype="multipart/form-data" id="form-pengaduan">
                 @csrf
 
                 <div class="mb-3">
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="category_id" class="form-label fw-semibold">Kategori Sarana <span class="text-danger">*</span></label>
+                    <label for="category_id" class="form-label fw-semibold">Kategori Tempat <span class="text-danger">*</span></label>
                     <select class="form-select @error('category_id') is-invalid @enderror"
                             id="category_id" name="category_id" required>
                         <option value="">Pilih Kategori</option>
@@ -88,8 +88,11 @@
 
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('dashboard.siswa') }}" class="btn btn-secondary">Batal</a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane me-2"></i> Kirim Pengaduan
+                    <button type="submit" class="btn btn-primary" id="btn-submit">
+                        <span id="btn-text"><i class="fas fa-paper-plane me-2"></i> Kirim Pengaduan</span>
+                        <span id="btn-loading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin me-2"></i> Mengirim...
+                        </span>
                     </button>
                 </div>
             </form>
@@ -97,3 +100,14 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Animasi Loading saat tombol submit diklik
+    document.getElementById('form-pengaduan').addEventListener('submit', function() {
+        document.getElementById('btn-text').style.display = 'none';
+        document.getElementById('btn-loading').style.display = 'inline-block';
+        document.getElementById('btn-submit').disabled = true;
+    });
+</script>
+@endpush
