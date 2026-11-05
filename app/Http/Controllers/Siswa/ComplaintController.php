@@ -22,20 +22,23 @@ class ComplaintController extends Controller
 
     public function store(Request $request)
     {
+        // VALIDASI: PHOTO WAJIB
         $request->validate([
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'location' => 'required|string',
             'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'photo.required' => 'Foto kerusakan wajib diunggah!',
+            'photo.image' => 'File harus berupa gambar.',
+            'photo.max' => 'Ukuran foto maksimal 2MB.',
         ]);
 
         $ticketNumber = 'SLP-' . date('Ymd') . '-' . str_pad(Complaint::count() + 1, 3, '0', STR_PAD_LEFT);
 
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('complaints', 'public');
-        }
+        // Upload Foto (Wajib ada karena validasi di atas)
+        $photoPath = $request->file('photo')->store('complaints', 'public');
 
         $complaint = Complaint::create([
             'ticket_number' => $ticketNumber,
@@ -56,7 +59,7 @@ class ComplaintController extends Controller
             'changed_by' => Auth::id(),
         ]);
 
-        // KIRIM NOTIFIKASI KE ADMIN (Tanpa Link)
+        // Notifikasi ke Admin
         $admins = User::where('role', 'Admin')->get();
         foreach ($admins as $admin) {
             Notification::create([

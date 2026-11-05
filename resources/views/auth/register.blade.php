@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiLaporin - Daftar Akun</title>
+    
+    <!-- FAVICON LOGO SEKOLAH -->
+    <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTUjLsNl7GtY4cDyyKBO70fZTL8nzaPQrOf7qpPBG-KEZQtFhuRGPg3bFt&s=10">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -62,7 +66,6 @@
         /* === KANAN (FORM DARK) === */
         .register-right { 
             flex: 1; 
-            /* Warna dasar gelap elegan */
             background: #0F172A; 
             padding: 60px; 
             display: flex; 
@@ -72,7 +75,6 @@
             position: relative;
         }
 
-        /* Ornamen Glow di belakang form */
         .register-right::before {
             content: ''; position: absolute; width: 300px; height: 300px;
             background: rgba(37, 99, 235, 0.3); filter: blur(100px);
@@ -84,17 +86,15 @@
             position: relative; z-index: 1; 
         }
 
-        /* Teks Putih */
         .register-form-container h2, 
         .register-form-container p, 
         .register-form-container label { color: #F1F5F9; }
         .text-muted { color: #94A3B8 !important; }
 
-        /* === KOMPONEN FORM (GLASSMORPHISM) === */
         .form-control { 
             border-radius: 12px; 
             padding: 14px 16px; 
-            background: rgba(255, 255, 255, 0.05); /* Transparan */
+            background: rgba(255, 255, 255, 0.05); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
             color: #F1F5F9;
         }
@@ -106,7 +106,6 @@
         }
         .form-control::placeholder { color: #64748B; }
 
-        /* Tombol */
         .btn-primary { 
             background: #2563EB; 
             border: none; 
@@ -123,7 +122,6 @@
             box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5); 
         }
 
-        /* Info Box (Kuning gelap transparan) */
         .info-box {
             background: rgba(245, 158, 11, 0.15);
             border: 1px solid rgba(245, 158, 11, 0.3);
@@ -133,11 +131,9 @@
             font-size: 13px;
         }
 
-        /* Link Daftar/Masuk */
         .auth-link { color: #60A5FA; font-weight: 700; text-decoration: none; transition: 0.2s; }
         .auth-link:hover { color: #93C5FD; text-decoration: underline; }
 
-        /* === RESPONSIVE (MOBILE) === */
         @media (max-width: 992px) {
             .register-container { flex-direction: column; }
             .register-left { padding: 40px 20px; min-height: auto; }
@@ -151,12 +147,16 @@
 <body>
 
 <div class="register-container">
-    <!-- SISI KIRI (FOTO) -->
+    <!-- SISI KIRI (FOTO & LOGO) -->
     <div class="register-left">
         <div>
-            <div class="brand-logo mb-4">
-                <h1 class="fw-bold m-0" style="font-size: 32px;">Si<span style="color: #93C5FD;">Laporin</span></h1>
-                <p class="mt-2 opacity-75">Sistem Pengaduan Sarana Sekolah</p>
+            <div class="brand-logo mb-4 d-flex align-items-center gap-3">
+                <!-- LOGO SEKOLAH DENGAN BACKGROUND PUTIH TRANSPARAN -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTUjLsNl7GtY4cDyyKBO70fZTL8nzaPQrOf7qpPBG-KEZQtFhuRGPg3bFt&s=10" alt="Logo SMKN 5 Surakarta" style="width: 75px; height: auto; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5)); background: rgba(255, 255, 255, 0.9); border-radius: 12px; padding: 5px;">
+                <div>
+                    <h1 class="fw-bold m-0" style="font-size: 32px;">Si<span style="color: #93C5FD;">Laporin</span></h1>
+                    <p class="mt-1 opacity-75 m-0">Sistem Pengaduan Sarana Sekolah</p>
+                </div>
             </div>
         </div>
 
@@ -196,7 +196,6 @@
             <h2 class="fw-bold mb-2" style="font-size: 28px;">Daftar Akun Baru</h2>
             <p class="text-muted mb-4">Isi data diri kamu dengan lengkap.</p>
 
-            <!-- INFO BOX -->
             <div class="info-box mb-4">
                 <i class="fas fa-info-circle me-2"></i> 
                 Pendaftaran ini hanya untuk <b>Siswa</b>. Untuk akun Admin, hubungi petugas sekolah.

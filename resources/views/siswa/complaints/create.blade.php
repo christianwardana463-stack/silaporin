@@ -75,10 +75,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="photo" class="form-label fw-semibold">Foto Kerusakan</label>
+                    <label for="photo" class="form-label fw-semibold">
+                        Foto Kerusakan <span class="text-danger">*</span>
+                    </label>
                     <input type="file" class="form-control @error('photo') is-invalid @enderror"
-                           id="photo" name="photo" accept="image/*">
-                    <small class="text-muted">Format: JPG, PNG, JPEG. Maks: 2MB</small>
+                           id="photo" name="photo" accept="image/*" required>
+                    <small class="text-muted">Format: JPG, PNG, JPEG. Maks: 2MB. <b>(Wajib diisi)</b></small>
                     @error('photo')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

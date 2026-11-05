@@ -151,16 +151,19 @@
                 </div>
             </div>
 
-            <!-- Rating -->
+            <!-- ============================================== -->
+            <!-- FITUR RATING: Muncul HANYA JIKA STATUS SELESAI -->
+            <!-- ============================================== -->
             @if($complaint->status == 'Selesai')
-                <div class="card shadow">
-                    <div class="card-header">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="fas fa-star me-2"></i> Beri Rating
+                <div class="card shadow border-warning">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="m-0 font-weight-bold">
+                            <i class="fas fa-star me-2"></i> Beri Rating Pelayanan
                         </h6>
                     </div>
                     <div class="card-body">
                         @if($complaint->rating)
+                            <!-- Jika sudah pernah rating -->
                             <div class="text-center">
                                 <div class="text-warning fs-1">
                                     @for($i = 1; $i <= 5; $i++)
@@ -171,32 +174,44 @@
                                         @endif
                                     @endfor
                                 </div>
-                                <p class="text-muted mt-2">{{ $complaint->rating->comment ?? 'Tidak ada komentar' }}</p>
+                                <p class="text-muted mt-2 mb-0">{{ $complaint->rating->comment ?? 'Tidak ada komentar' }}</p>
+                                <small class="text-success fw-bold"><i class="fas fa-check-circle"></i> Terima kasih!</small>
                             </div>
                         @else
+                            <!-- Jika belum rating, tampilkan form -->
                             <form action="{{ route('siswa.complaints.rate', $complaint->id) }}" method="POST">
                                 @csrf
                                 <div class="mb-3 text-center">
-                                    <label class="form-label fw-semibold">Rating</label>
+                                    <label class="form-label fw-semibold mb-2">Seberapa puas Anda dengan perbaikannya?</label>
                                     <div class="rating-stars">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" required>
-                                                <label class="form-check-label" for="star{{ $i }}">
-                                                    @for($j = 1; $j <= $i; $j++)
-                                                        ★
-                                                    @endfor
-                                                </label>
-                                            </div>
-                                        @endfor
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="rating" id="star1" value="1" required>
+                                            <label class="form-check-label" for="star1">★</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="rating" id="star2" value="2">
+                                            <label class="form-check-label" for="star2">★★</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="rating" id="star3" value="3">
+                                            <label class="form-check-label" for="star3">★★★</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="rating" id="star4" value="4">
+                                            <label class="form-check-label" for="star4">★★★★</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="rating" id="star5" value="5">
+                                            <label class="form-check-label" for="star5">★★★★★</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="comment" class="form-label">Komentar</label>
+                                    <label for="comment" class="form-label fw-semibold">Komentar (Opsional)</label>
                                     <textarea class="form-control" id="comment" name="comment" rows="2"
-                                              placeholder="Bagaimana pelayanan kami?"></textarea>
+                                              placeholder="Tulis pengalaman Anda di sini..."></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">
+                                <button type="submit" class="btn btn-warning w-100 fw-bold text-dark">
                                     <i class="fas fa-paper-plane me-2"></i> Kirim Rating
                                 </button>
                             </form>

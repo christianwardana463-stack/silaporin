@@ -6,7 +6,8 @@
 @push('styles')
 <style>
     /* =====================================
-       DASHBOARD SISWA - LIGHT & DARK MODE
+       DASHBOARD SISWA
+       LIGHT MODE & DARK MODE
     ===================================== */
 
     .dashboard-page {
@@ -51,7 +52,10 @@
         color: #1D4ED8 !important;
     }
 
-    /* STATISTIC CARDS */
+    /* =====================================
+       STATISTIC CARDS
+    ===================================== */
+
     .dashboard-stat-card {
         background: var(--bg-card);
         color: var(--text-dark);
@@ -79,7 +83,6 @@
         margin-top: 12px !important;
     }
 
-    /* CARD STATISTIC DARK */
     [data-theme="dark"] .dashboard-stat-card {
         background: #1E293B;
         border-color: #334155 !important;
@@ -88,10 +91,12 @@
 
     [data-theme="dark"] .dashboard-stat-card:hover {
         background: #243247;
-        box-shadow: 0 8px 20px rgba(0,0,0,.2);
     }
 
-    /* RIWAYAT CARD */
+    /* =====================================
+       RIWAYAT CARD
+    ===================================== */
+
     .dashboard-history {
         background: var(--bg-card);
         color: var(--text-dark);
@@ -103,45 +108,79 @@
         color: var(--text-dark);
     }
 
-    /* TABLE HEADER LIGHT MODE */
+    /* =====================================
+       TABLE LIGHT MODE
+    ===================================== */
+
+    .dashboard-page .table {
+        --bs-table-color: #1F2937;
+        --bs-table-bg: #FFFFFF;
+        --bs-table-border-color: #E5E7EB;
+        --bs-table-hover-color: #1F2937;
+        --bs-table-hover-bg: #F1F5F9;
+
+        color: #1F2937;
+        background: #FFFFFF;
+        margin-bottom: 0;
+    }
+
     .dashboard-page .table thead th {
-        background: #F8FAFC;
-        color: #64748B;
+        background: #F8FAFC !important;
+        color: #64748B !important;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 700;
         padding: 14px;
-        border-color: var(--border);
+        border-color: #E5E7EB !important;
     }
 
     .dashboard-page .table tbody td {
+        background: #FFFFFF;
+        color: #1F2937 !important;
         padding: 14px;
         vertical-align: middle;
-        color: var(--text-dark);
+        border-color: #E5E7EB !important;
     }
 
-    /* TABLE DARK MODE */
-    [data-theme="dark"] .dashboard-page .table {
-        --bs-table-bg: #1E293B;
-        --bs-table-color: #F1F5F9;
-        --bs-table-border-color: #334155;
-        --bs-table-hover-bg: #273449;
-        --bs-table-hover-color: #FFFFFF;
+    .dashboard-page .table-hover tbody tr:hover td {
+        background: #F1F5F9 !important;
+        color: #1F2937 !important;
+    }
 
+    /* =====================================
+       TABLE DARK MODE
+    ===================================== */
+
+    [data-theme="dark"] .dashboard-history {
         background: #1E293B;
-        color: #F1F5F9;
+        border-color: #334155;
+    }
+
+    [data-theme="dark"] .dashboard-history h6 {
+        color: #F1F5F9 !important;
+    }
+
+    [data-theme="dark"] .dashboard-page .table {
+        --bs-table-color: #F1F5F9;
+        --bs-table-bg: #1E293B;
+        --bs-table-border-color: #334155;
+        --bs-table-hover-color: #FFFFFF;
+        --bs-table-hover-bg: #334155;
+
+        color: #F1F5F9 !important;
+        background: #1E293B !important;
     }
 
     [data-theme="dark"] .dashboard-page .table thead th,
     [data-theme="dark"] .dashboard-page .table thead.table-light th {
-        background: #273449 !important;
+        background: #334155 !important;
         color: #CBD5E1 !important;
-        border-color: #334155 !important;
+        border-color: #475569 !important;
     }
 
     [data-theme="dark"] .dashboard-page .table tbody td {
-        background: #1E293B;
+        background: #1E293B !important;
         color: #F1F5F9 !important;
-        border-color: #334155 !important;
+        border-color: #475569 !important;
     }
 
     [data-theme="dark"] .dashboard-page .table-hover tbody tr:hover td {
@@ -149,17 +188,53 @@
         color: #FFFFFF !important;
     }
 
-    /* STATUS BADGE TETAP BERWARNA */
+    /* =====================================
+       STATUS BADGES
+       DIKUNCI AGAR TIDAK TERTIMPA CSS GLOBAL
+    ===================================== */
+
     .dashboard-page .status-diterima,
     .dashboard-page .status-diproses,
     .dashboard-page .status-selesai,
     .dashboard-page .status-ditolak {
-        display: inline-block;
+        display: inline-block !important;
+        padding: 5px 12px !important;
+        border-radius: 20px !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
         white-space: nowrap;
     }
 
-    /* RESPONSIVE */
+    /* DITERIMA - BIRU */
+    .dashboard-page .status-diterima {
+        background: #DBEAFE !important;
+        color: #1D4ED8 !important;
+    }
+
+    /* DIPROSES - KUNING */
+    .dashboard-page .status-diproses {
+        background: #FEF3C7 !important;
+        color: #92400E !important;
+    }
+
+    /* SELESAI - HIJAU */
+    .dashboard-page .status-selesai {
+        background: #D1FAE5 !important;
+        color: #065F46 !important;
+    }
+
+    /* DITOLAK - MERAH */
+    .dashboard-page .status-ditolak {
+        background: #FEE2E2 !important;
+        color: #991B1B !important;
+    }
+
+    /* =====================================
+       RESPONSIVE
+    ===================================== */
+
     @media (max-width: 768px) {
+
         .dashboard-welcome {
             padding: 24px !important;
         }
@@ -291,7 +366,7 @@
 
     </div>
 
-    <!-- PENGADUAN TERBARU -->
+    <!-- RIWAYAT PENGADUAN TERBARU -->
     <div class="card dashboard-history p-3 mt-2">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -313,61 +388,64 @@
 
         <div class="table-responsive">
 
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle">
 
                 <thead class="table-light">
-
                     <tr>
                         <th>Tiket</th>
                         <th>Judul</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
-
                 </thead>
 
                 <tbody>
 
                     @forelse($recentComplaints as $c)
 
-                    <tr>
+                        <tr>
 
-                        <td class="fw-bold">
-                            {{ $c->ticket_number }}
-                        </td>
+                            <td class="fw-bold">
+                                {{ $c->ticket_number }}
+                            </td>
 
-                        <td>
-                            {{ Str::limit($c->title, 20) }}
-                        </td>
+                            <td>
+                                {{ Str::limit($c->title, 20) }}
+                            </td>
 
-                        <td>
-                            <span class="status-{{ strtolower($c->status) }}">
-                                {{ $c->status }}
-                            </span>
-                        </td>
+                            <!-- STATUS -->
+                            <td>
+                                <span class="status-{{ strtolower($c->status) }}">
+                                    {{ $c->status }}
+                                </span>
+                            </td>
 
-                        <td>
+                            <!-- AKSI -->
+                            <td>
 
-                            <a href="{{ route('siswa.complaints.show', $c->id) }}"
-                               class="btn btn-sm text-white"
-                               style="background: var(--primary);">
+                                <a href="{{ route('siswa.complaints.show', $c->id) }}"
+                                   class="btn btn-sm text-white"
+                                   style="background: var(--primary);">
 
-                                <i class="fas fa-eye"></i>
+                                    <i class="fas fa-eye"></i>
 
-                            </a>
+                                </a>
 
-                        </td>
+                            </td>
 
-                    </tr>
+                        </tr>
 
                     @empty
 
-                    <tr>
-                        <td colspan="4" class="text-center text-muted py-4">
-                            <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
-                            Belum ada pengaduan.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+
+                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+
+                                Belum ada pengaduan.
+
+                            </td>
+                        </tr>
 
                     @endforelse
 

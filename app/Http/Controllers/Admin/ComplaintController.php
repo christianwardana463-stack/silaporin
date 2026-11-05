@@ -57,6 +57,11 @@ class ComplaintController extends Controller
             'repair_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        // VALIDASI: Jika status diubah jadi Selesai, foto perbaikan wajib ada
+        if ($request->status == 'Selesai' && !$request->hasFile('repair_photo') && !$complaint->repair_photo) {
+            return back()->withErrors(['repair_photo' => 'Foto hasil perbaikan wajib diunggah sebelum menandai pengaduan sebagai Selesai!'])->withInput();
+        }
+
         $oldStatus = $complaint->status;
 
         $repairPhotoPath = $complaint->repair_photo;
@@ -83,7 +88,7 @@ class ComplaintController extends Controller
             ]);
         }
 
-        // KIRIM NOTIFIKASI KE SISWA (Tanpa Link)
+        // Notifikasi ke Siswa
         if ($oldStatus != $request->status || $request->filled('admin_response')) {
             Notification::create([
                 'user_id' => $complaint->user_id,

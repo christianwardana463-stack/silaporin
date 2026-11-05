@@ -18,6 +18,18 @@
         </div>
     @endif
 
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i> Ada kesalahan:
+            <ul class="mb-0 mt-1">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-md-7">
             <!-- Informasi Pengaduan -->
@@ -194,10 +206,21 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="repair_photo" class="form-label fw-semibold">Foto Hasil Perbaikan</label>
-                            <input type="file" class="form-control" id="repair_photo"
-                                   name="repair_photo" accept="image/*">
-                            <small class="text-muted">Format: JPG, PNG, JPEG. Maks: 2MB</small>
+                            <label for="repair_photo" class="form-label fw-semibold">
+                                Foto Hasil Perbaikan 
+                                <span class="text-danger" id="repair_photo_required_mark" style="display: none;">*</span>
+                            </label>
+                            <input type="file" class="form-control @error('repair_photo') is-invalid @enderror" 
+                                   id="repair_photo" name="repair_photo" accept="image/*">
+                            <small class="text-muted">
+                                Format: JPG, PNG. Maks: 2MB. 
+                                <span id="repair_photo_info" class="text-danger fw-bold" style="display: none;">
+                                    (Wajib diunggah jika status diubah menjadi Selesai!)
+                                </span>
+                            </small>
+                            @error('repair_photo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">
@@ -241,3 +264,25 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSelect = document.getElementById('status');
+        const requiredMark = document.getElementById('repair_photo_required_mark');
+        const photoInfo = document.getElementById('repair_photo_info');
+
+        if (statusSelect) {
+            statusSelect.addEventListener('change', function() {
+                if (this.value === 'Selesai') {
+                    requiredMark.style.display = 'inline';
+                    photoInfo.style.display = 'inline';
+                } else {
+                    requiredMark.style.display = 'none';
+                    photoInfo.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+@endpush
