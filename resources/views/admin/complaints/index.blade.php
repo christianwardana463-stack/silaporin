@@ -278,6 +278,7 @@
             min-width: 950px;
         }
     }
+    
 </style>
 @endpush
 
